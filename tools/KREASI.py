@@ -49,7 +49,7 @@ st.write("Video ini menjelaskan dasar-dasar tentang data sains. Jika kamu ingin 
 # Tombol untuk download video
 download_url = "https://www.y2mate.com/youtube/wq-O8byTAF0"
 if st.button('Download Video'):
-    st.markdown(f"[Klik di sini untuk download video](https://www.y2mate.com/youtube/wq-O8byTAF0)")
+    st.markdown(f"[Klik di sini untuk download video](https://drive.google.com/file/d/12JhS_ct2DTdhYZ3ENl-3JYdbfNpn1dlD/view?usp=sharing)")
 
 # Bagian 5: Contoh Visualisasi Data
 st.header("Contoh Visualisasi Data")
