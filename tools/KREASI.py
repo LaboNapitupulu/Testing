@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from PIL import Image
+import plotly.express as px
 
 # Bagian 1: Judul Aplikasi
 st.title("Penerapan Data Sains: Visualisasi dan Statistik")
@@ -13,7 +13,7 @@ Beberapa topik penting dalam data sains meliputi Machine Learning, Data Mining, 
 Data Visualization, dan Big Data. Berikut ini adalah contoh visualisasi dari data terkait pengguna internet di Indonesia.
 """)
 
-# Bagian 6: Tabel Dataset dan Grafik Distribusi Artikel Data Sains
+# Bagian 3: Tabel dan Grafik Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains
 st.subheader("Tabel dan Grafik Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains")
 
 # Dataset distribusi artikel per topik
@@ -38,10 +38,8 @@ Grafik di atas menunjukkan distribusi artikel ilmiah berdasarkan topik utama dal
 Machine Learning dan Artificial Intelligence merupakan topik yang paling banyak diteliti dalam beberapa tahun terakhir.
 """)
 
-# Bagian 7: Menyematkan Video YouTube
+# Bagian 4: Menyematkan Video YouTube
 st.subheader("Video Penjelasan tentang Data Sains")
-
-# Link video YouTube
 video_url = "https://youtu.be/wq-O8byTAF0"
 st.video(video_url)
 
@@ -52,3 +50,70 @@ st.write("Video ini menjelaskan dasar-dasar tentang data sains. Jika kamu ingin 
 download_url = "https://www.y2mate.com/youtube/wq-O8byTAF0"
 if st.button('Download Video'):
     st.markdown(f"[Klik di sini untuk download video](https://www.y2mate.com/youtube/wq-O8byTAF0)")
+
+# Bagian 5: Contoh Visualisasi Data Pengguna Internet di Dunia
+st.header("Contoh Visualisasi Data")
+
+# Bagian 6: Visualisasi Data Pengguna Internet di Dunia
+st.subheader("Pengguna Internet di Dunia")
+
+# Dataset Pengguna Internet di Dunia
+data_internet = {
+    'Negara': ['United States', 'Indonesia', 'India', 'Brazil', 'China'],
+    'Pengguna Internet (%)': [89, 64, 50, 75, 60]
+}
+
+# Membuat DataFrame
+df_internet = pd.DataFrame(data_internet)
+
+# Menampilkan tabel data pengguna internet
+st.write("Berikut adalah persentase pengguna internet di berbagai negara:")
+st.dataframe(df_internet)
+
+# Membuat peta interaktif dengan Plotly
+fig = px.choropleth(
+    df_internet, 
+    locations='Negara', 
+    locationmode='country names',
+    color='Pengguna Internet (%)', 
+    hover_name='Negara',
+    title="Pengguna Internet di Dunia Berdasarkan Negara",
+    color_continuous_scale="Blues"
+)
+
+# Menampilkan peta di Streamlit
+st.plotly_chart(fig)
+
+# Penjelasan tambahan
+st.write("""
+Peta di atas menunjukkan persentase pengguna internet di berbagai negara. 
+Negara dengan pengguna internet terbanyak adalah Amerika Serikat, diikuti oleh Indonesia dan India.
+""")
+
+# Bagian 7: Analisis Data COVID-19
+st.subheader("Analisis Kasus COVID-19")
+
+# Dataset kasus COVID-19 (contoh)
+data_covid = {
+    'Tanggal': pd.date_range(start='2020-01-01', periods=10, freq='M'),
+    'Kasus Harian': [100, 150, 200, 180, 160, 120, 130, 140, 170, 190]
+}
+
+# Membuat DataFrame untuk kasus COVID-19
+df_covid = pd.DataFrame(data_covid)
+
+# Menampilkan tabel kasus harian
+st.write("Berikut adalah data kasus harian COVID-19:")
+st.dataframe(df_covid)
+
+# Membuat grafik garis untuk kasus COVID-19
+fig_covid = px.line(df_covid, x='Tanggal', y='Kasus Harian', title='Tren Kasus COVID-19 Harian')
+
+# Menampilkan grafik di Streamlit
+st.plotly_chart(fig_covid)
+
+# Penjelasan tambahan
+st.write("""
+Grafik di atas menunjukkan tren kenaikan dan penurunan kasus COVID-19 selama periode waktu tertentu.
+Penggunaan internet terus meningkat seiring dengan perkembangan teknologi dan aksesibilitas data.
+""")
