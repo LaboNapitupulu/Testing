@@ -131,7 +131,6 @@ Grafik di atas menunjukkan tren kenaikan dan penurunan kasus COVID-19 selama per
 
 # Sumber Data
 st.write("""
-st.write("""
 Sumber Data:
 1. **Topik Data Sains (Jumlah Artikel)**: Data diambil dari [Google Scholar](https://scholar.google.com/) atau [arXiv](https://arxiv.org/).
 2. **Pengguna Internet di Dunia**: Data diambil dari [Internet World Stats](https://www.internetworldstats.com/) atau [Statista](https://www.statista.com/).
