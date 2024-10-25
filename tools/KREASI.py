@@ -128,3 +128,11 @@ st.plotly_chart(fig_covid)
 st.write("""
 Grafik di atas menunjukkan tren kenaikan dan penurunan kasus COVID-19 selama periode waktu tertentu.
 """)
+
+# Sumber Data
+st.write("""
+Sumber Data:
+1. **Topik Data Sains (Jumlah Artikel)**: Data diambil dari Google Scholar atau arXiv.
+2. **Pengguna Internet di Dunia**: Data diambil dari Internet World Stats atau Statista.
+3. **Analisis Kasus COVID-19**: Data diambil dari World Health Organization (WHO) atau Our World in Data.
+""")
