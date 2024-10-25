@@ -3,40 +3,54 @@ import pandas as pd
 import plotly.express as px
 
 # Judul aplikasi
-st.title("Pengguna Internet di Dunia")
+st.title("Pengenalan Sains Data")
 
-# Dataset Pengguna Internet di Dunia
-data_internet = {
-    'Negara': ['United States', 'Indonesia', 'India', 'Brazil', 'China'],
-    'Pengguna Internet (%)': [89, 64, 50, 75, 60]
+# Deskripsi Singkat
+st.write("""
+Sains data adalah bidang interdisipliner yang menggunakan metode, algoritma, dan sistem ilmiah untuk mengekstrak wawasan dari data dalam berbagai bentuk, baik terstruktur maupun tidak terstruktur. 
+Ini adalah bidang yang berkembang pesat dan sangat penting dalam pengambilan keputusan berbasis data di banyak sektor industri.
+""")
+
+# Menyertakan Video Pengenalan Sains Data
+st.subheader("Video Pengenalan Sains Data")
+video_url = "https://www.youtube.com/watch?v=wq-O8byTAF0"  # Ganti dengan URL video yang relevan
+st.video(video_url)
+
+# Tabel Interaktif
+st.subheader("Tabel Statistik Sains Data")
+
+# Contoh dataset statistik sains data
+data_statistik = {
+    'Aspek': ['Jumlah Pengguna Internet (juta)', 'Volume Data Global (Zettabytes)', 'Data yang Diproses Per Tahun (Exabytes)'],
+    'Nilai': [5000, 59, 44]  # Ganti dengan data yang relevan
 }
 
-# Membuat DataFrame untuk pengguna internet di negara-negara besar
+# Membuat DataFrame
+df_statistik = pd.DataFrame(data_statistik)
+
+# Menampilkan tabel interaktif
+st.dataframe(df_statistik)
+
+# Visualisasi Data
+st.subheader("Visualisasi Pertumbuhan Pengguna Internet di Dunia")
+
+# Contoh data pengguna internet
+data_internet = {
+    'Tahun': [2015, 2016, 2017, 2018, 2019, 2020],
+    'Pengguna (juta)': [3200, 3600, 3900, 4200, 4600, 5000]
+}
+
+# Membuat DataFrame
 df_internet = pd.DataFrame(data_internet)
 
-# Menampilkan tabel data pengguna internet
-st.subheader("Tabel Pengguna Internet di Negara-Negara Besar")
-st.dataframe(df_internet)
+# Membuat grafik garis
+fig = px.line(df_internet, x='Tahun', y='Pengguna (juta)', title='Pertumbuhan Pengguna Internet di Dunia')
 
-# Membuat peta interaktif dengan Plotly
-st.subheader("Peta Pengguna Internet di Dunia Berdasarkan Negara")
-
-# Choropleth mapbox Plotly
-fig = px.choropleth(
-    df_internet, 
-    locations='Negara', 
-    locationmode='country names',
-    color='Pengguna Internet (%)', 
-    hover_name='Negara',
-    title="Pengguna Internet di Dunia Berdasarkan Negara",
-    color_continuous_scale="Blues"
-)
-
-# Menampilkan peta di Streamlit
+# Menampilkan grafik di Streamlit
 st.plotly_chart(fig)
 
 # Penjelasan tambahan
 st.write("""
-Peta di atas menunjukkan persentase pengguna internet di berbagai negara. 
-Amerika Serikat memiliki persentase pengguna internet tertinggi di antara negara-negara yang dibandingkan.
+Grafik di atas menunjukkan pertumbuhan jumlah pengguna internet di seluruh dunia dari tahun 2015 hingga 2020.
+Penggunaan internet terus meningkat seiring dengan perkembangan teknologi dan aksesibilitas data.
 """)
