@@ -47,7 +47,7 @@ st.video(video_url)
 st.write("Video ini menjelaskan dasar-dasar tentang data sains. Jika kamu ingin mendownload video ini, klik tombol di bawah.")
 
 # Tombol untuk download video
-download_url = "https://drive.google.com/file/d/12JhS_ct2DTdhYZ3ENl-3JYdbfNpn1dlD/view?usp=sharing
+download_url = "https://drive.google.com/file/d/12JhS_ct2DTdhYZ3ENl-3JYdbfNpn1dlD/view?usp=sharing"
 if st.button('Download Video'):
     st.markdown(f"[Klik di sini untuk download video](https://drive.google.com/file/d/12JhS_ct2DTdhYZ3ENl-3JYdbfNpn1dlD/view?usp=sharing)")
 
