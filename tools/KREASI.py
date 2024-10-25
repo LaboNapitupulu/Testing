@@ -10,7 +10,7 @@ st.header("Apa itu Data Sains?")
 st.write("""
 Data sains adalah bidang multidisiplin yang bertujuan untuk mengekstraksi wawasan dari data. 
 Beberapa topik penting dalam data sains meliputi Machine Learning, Data Mining, Artificial Intelligence, 
-Data Visualization, dan Big Data. Berikut ini adalah contoh visualisasi dari data terkait pengguna internet di Indonesia.
+Data Visualization, dan Big Data. Berikut ini adalah contoh visualisasi dari data terkait pengguna internet di berbagai negara.
 """)
 
 # Bagian 3: Tabel dan Grafik Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains
@@ -57,10 +57,22 @@ st.header("Contoh Visualisasi Data")
 # Bagian 6: Visualisasi Data Pengguna Internet di Dunia
 st.subheader("Pengguna Internet di Dunia")
 
-# Dataset Pengguna Internet di Dunia
+# Dataset Pengguna Internet di 25 negara
 data_internet = {
-    'Negara': ['United States', 'Indonesia', 'India', 'Brazil', 'China', 'Germany', 'United Kingdom', 'France', 'Japan', 'Russia', 'South Africa', 'Australia', 'Canada', 'Mexico', 'Italy'],
-    'Pengguna Internet (%)': [89, 64, 50, 75, 60, 91, 94, 93, 92, 78, 62, 89, 88, 70, 82]
+    'Negara': [
+        'United States', 'Indonesia', 'India', 'Brazil', 'China', 
+        'Germany', 'United Kingdom', 'France', 'Japan', 'Russia',
+        'South Africa', 'Australia', 'Canada', 'Mexico', 'Italy', 
+        'South Korea', 'Spain', 'Turkey', 'Argentina', 'Nigeria', 
+        'Netherlands', 'Saudi Arabia', 'Taiwan', 'Sweden', 'Norway'
+    ],
+    'Pengguna Internet (%)': [
+        89, 64, 50, 75, 60, 
+        91, 94, 93, 92, 78, 
+        62, 89, 88, 70, 82, 
+        85, 83, 79, 76, 71, 
+        67, 64, 66, 90, 88
+    ]
 }
 
 # Membuat DataFrame
