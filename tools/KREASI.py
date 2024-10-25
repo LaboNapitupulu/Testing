@@ -13,34 +13,6 @@ Beberapa topik penting dalam data sains meliputi Machine Learning, Data Mining, 
 Data Visualization, dan Big Data. Berikut ini adalah contoh visualisasi dari data terkait pengguna internet di Indonesia.
 """)
 
-# Bagian 4: Dataset Pengguna Internet di Indonesia
-st.subheader("Tabel Pengguna Internet di Indonesia (2020-2023)")
-
-# Dataset pengguna internet di Indonesia
-data_internet = {
-    'Tahun': [2020, 2021, 2022, 2023],
-    'Jumlah Pengguna (juta)': [175.4, 202.6, 204.7, 210.3]
-}
-
-# Membuat DataFrame untuk pengguna internet
-df_internet = pd.DataFrame(data_internet)
-
-# Menampilkan tabel pengguna internet
-st.dataframe(df_internet)
-
-# Bagian 5: Grafik Bar Pengguna Internet di Indonesia
-st.subheader("Grafik Jumlah Pengguna Internet di Indonesia (2020-2023)")
-
-# Menggunakan Streamlit's built-in bar chart
-st.bar_chart(df_internet.set_index('Tahun'))
-
-# Penjelasan tentang grafik
-st.write("""
-Grafik di atas menunjukkan pertumbuhan jumlah pengguna internet di Indonesia selama beberapa tahun terakhir.
-Data ini diambil dari laporan **We Are Social** dan **Statista** yang menunjukkan peningkatan penggunaan internet
-yang signifikan dari tahun 2020 hingga 2023.
-""")
-
 # Bagian 6: Tabel Dataset dan Grafik Distribusi Artikel Data Sains
 st.subheader("Tabel dan Grafik Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains")
 
