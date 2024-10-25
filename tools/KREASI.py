@@ -3,40 +3,33 @@ import pandas as pd
 import plotly.express as px
 
 # Judul aplikasi
-st.title("Persebaran Pengguna Internet di Indonesia Berdasarkan Provinsi")
+st.title("Pengguna Internet di Dunia")
 
-# Dataset Pengguna Internet per Provinsi
-data_persebaran = {
-    'Provinsi': ['Jawa Barat', 'Sumatera Utara', 'Kalimantan Timur', 'Sulawesi Selatan', 'Papua'],
-    'Jumlah Pengguna (juta)': [120, 50, 20, 15, 5]
+# Dataset Pengguna Internet di Dunia
+data_internet = {
+    'Negara': ['United States', 'Indonesia', 'India', 'Brazil', 'China'],
+    'Pengguna Internet (%)': [89, 64, 50, 75, 60]
 }
 
-# Membuat DataFrame untuk pengguna internet per provinsi
-df_persebaran = pd.DataFrame(data_persebaran)
+# Membuat DataFrame untuk pengguna internet di negara-negara besar
+df_internet = pd.DataFrame(data_internet)
 
 # Menampilkan tabel data pengguna internet
-st.subheader("Tabel Pengguna Internet Berdasarkan Provinsi")
-st.dataframe(df_persebaran)
-
-# URL GeoJSON (pastikan URL ini benar dan dapat diakses)
-geojson_url = "https://raw.githubusercontent.com/superpikar/indonesia-geojson/master/indonesia-geojson/indonesia-provinces.geojson"
+st.subheader("Tabel Pengguna Internet di Negara-Negara Besar")
+st.dataframe(df_internet)
 
 # Membuat peta interaktif dengan Plotly
-st.subheader("Peta Persebaran Pengguna Internet Berdasarkan Provinsi")
+st.subheader("Peta Pengguna Internet di Dunia Berdasarkan Negara")
 
 # Choropleth mapbox Plotly
-fig = px.choropleth_mapbox(
-    df_persebaran, 
-    geojson=geojson_url, 
-    locations='Provinsi',  # Kolom di DataFrame yang berisi nama provinsi
-    featureidkey="properties.NAME_1",  # Field di GeoJSON yang mencocokkan nama wilayah
-    color='Jumlah Pengguna (juta)',  # Data yang digunakan untuk mewarnai
-    hover_name='Provinsi',  # Nama provinsi yang ditampilkan saat hover
-    title="Persebaran Pengguna Internet di Indonesia Berdasarkan Provinsi",
-    mapbox_style="carto-positron",
-    center={"lat": -1.5, "lon": 117.5},  # Pusat peta di Indonesia
-    zoom=3,  # Tingkat zoom
-    color_continuous_scale="Blues"  # Skala warna untuk visualisasi
+fig = px.choropleth(
+    df_internet, 
+    locations='Negara', 
+    locationmode='country names',
+    color='Pengguna Internet (%)', 
+    hover_name='Negara',
+    title="Pengguna Internet di Dunia Berdasarkan Negara",
+    color_continuous_scale="Blues"
 )
 
 # Menampilkan peta di Streamlit
@@ -44,6 +37,6 @@ st.plotly_chart(fig)
 
 # Penjelasan tambahan
 st.write("""
-Peta di atas menunjukkan persebaran pengguna internet di Indonesia berdasarkan provinsi besar. 
-Provinsi Jawa Barat memiliki jumlah pengguna internet terbesar, diikuti oleh Sumatera Utara, Kalimantan Timur, Sulawesi Selatan, dan Papua.
+Peta di atas menunjukkan persentase pengguna internet di berbagai negara. 
+Amerika Serikat memiliki persentase pengguna internet tertinggi di antara negara-negara yang dibandingkan.
 """)
