@@ -1,35 +1,55 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 # Bagian 1: Judul Aplikasi
-st.title("Penerapan Data Sains: Visualisasi dan Statistik")
+st.title("Persebaran Pengguna Internet di Indonesia Berdasarkan Pulau")
 
-# Bagian 2: Penjelasan Data Sains
-st.header("Apa itu Data Sains?")
-st.write("""
-Data sains adalah bidang multidisiplin yang bertujuan untuk mengekstraksi wawasan dari data. 
-Berikut ini adalah contoh visualisasi dari data terkait topik utama dalam data sains, seperti Machine Learning, 
-Data Mining, dan lainnya. Grafik di bawah ini menggambarkan distribusi artikel ilmiah berdasarkan topik dalam bidang data sains.
-""")
+# Bagian 2: Dataset Pengguna Internet per Pulau
+st.subheader("Tabel Pengguna Internet di Indonesia Berdasarkan Pulau")
 
-# Bagian 3: Tabel Dataset dan Statistik
-st.subheader("Tabel Distribusi Artikel Data Sains")
-
-# Dataset distribusi artikel per topik
-data = {
-    'Topik': ['Machine Learning', 'Data Mining', 'Artificial Intelligence', 'Data Visualization', 'Big Data'],
-    'Jumlah Artikel': [120, 80, 100, 50, 90]
+# Dataset pengguna internet di Indonesia berdasarkan pulau
+data_persebaran = {
+    'Pulau': ['Jawa', 'Sumatera', 'Kalimantan', 'Sulawesi', 'Papua'],
+    'Jumlah Pengguna (juta)': [120, 50, 20, 15, 5]
 }
 
-# Membuat DataFrame menggunakan pandas
-df = pd.DataFrame(data)
+# Membuat DataFrame untuk pengguna internet per pulau
+df_persebaran = pd.DataFrame(data_persebaran)
 
-# Menampilkan tabel distribusi artikel
-st.write("Berikut adalah jumlah artikel ilmiah terkait setiap topik data sains:")
-st.dataframe(df)
+# Menampilkan tabel interaktif
+st.dataframe(df_persebaran)
 
-# Bagian 4: Grafik Bar Sederhana dengan Streamlit
-st.subheader("Grafik Distribusi Artikel Ilmiah Berdasarkan Topik")
+# Bagian 3: Peta Interaktif Persebaran Pengguna Internet
+st.subheader("Peta Persebaran Pengguna Internet Berdasarkan Pulau")
 
-# Menggunakan bar chart bawaan dari Streamlit
-st.bar_chart(df.set_index('Topik'))
+# Data koordinat dan geojson untuk pulau-pulau besar di Indonesia
+# Untuk membuat visualisasi peta, kita menggunakan Plotly dengan peta choropleth
+
+# URL GeoJSON untuk peta Indonesia
+geojson_url = "https://raw.githubusercontent.com/superpikar/indonesia-geojson/master/indonesia-geojson/indonesia-provinces.geojson"
+
+# Membuat grafik peta dengan Plotly
+fig = px.choropleth_mapbox(
+    df_persebaran, 
+    geojson=geojson_url, 
+    locations='Pulau', 
+    featureidkey="properties.state",
+    color='Jumlah Pengguna (juta)',
+    hover_name='Pulau',
+    title="Persebaran Pengguna Internet di Indonesia Berdasarkan Pulau",
+    mapbox_style="carto-positron",
+    center={"lat": -1.5, "lon": 117.5},  # Pusat geografis Indonesia
+    zoom=3,
+    color_continuous_scale="Blues"
+)
+
+# Menampilkan grafik peta di Streamlit
+st.plotly_chart(fig)
+
+# Bagian 4: Penjelasan
+st.write("""
+Peta di atas menunjukkan persebaran pengguna internet di Indonesia berdasarkan pulau besar. 
+Jawa merupakan pulau dengan jumlah pengguna internet terbesar, diikuti oleh Sumatera, Kalimantan, Sulawesi, dan Papua. 
+Visualisasi ini menggunakan **Choropleth Map** yang menampilkan distribusi data dengan warna.
+""")
