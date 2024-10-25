@@ -13,10 +13,6 @@ Beberapa topik penting dalam data sains meliputi Machine Learning, Data Mining, 
 Data Visualization, dan Big Data. Berikut ini adalah contoh visualisasi dari data terkait pengguna internet di Indonesia.
 """)
 
-# Bagian 3: Menampilkan Gambar Ilustrasi Data Sains (gunakan URL)
-image_url = "https://www.analyticsvidhya.com/wp-content/uploads/2020/02/data-scientist.png"
-st.image(image_url, caption="Ilustrasi Data Sains", use_column_width=True)
-
 # Bagian 4: Dataset Pengguna Internet di Indonesia
 st.subheader("Tabel Pengguna Internet di Indonesia (2020-2023)")
 
