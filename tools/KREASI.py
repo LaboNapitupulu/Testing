@@ -51,7 +51,7 @@ download_url = "https://www.y2mate.com/youtube/wq-O8byTAF0"
 if st.button('Download Video'):
     st.markdown(f"[Klik di sini untuk download video](https://www.y2mate.com/youtube/wq-O8byTAF0)")
 
-# Bagian 5: Contoh Visualisasi Data Pengguna Internet di Dunia
+# Bagian 5: Contoh Visualisasi Data
 st.header("Contoh Visualisasi Data")
 
 # Bagian 6: Visualisasi Data Pengguna Internet di Dunia
@@ -59,8 +59,8 @@ st.subheader("Pengguna Internet di Dunia")
 
 # Dataset Pengguna Internet di Dunia
 data_internet = {
-    'Negara': ['United States', 'Indonesia', 'India', 'Brazil', 'China'],
-    'Pengguna Internet (%)': [89, 64, 50, 75, 60]
+    'Negara': ['United States', 'Indonesia', 'India', 'Brazil', 'China', 'Germany', 'United Kingdom', 'France', 'Japan', 'Russia', 'South Africa', 'Australia', 'Canada', 'Mexico', 'Italy'],
+    'Pengguna Internet (%)': [89, 64, 50, 75, 60, 91, 94, 93, 92, 78, 62, 89, 88, 70, 82]
 }
 
 # Membuat DataFrame
@@ -115,5 +115,4 @@ st.plotly_chart(fig_covid)
 # Penjelasan tambahan
 st.write("""
 Grafik di atas menunjukkan tren kenaikan dan penurunan kasus COVID-19 selama periode waktu tertentu.
-Penggunaan internet terus meningkat seiring dengan perkembangan teknologi dan aksesibilitas data.
 """)
