@@ -1,51 +1,53 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 # Bagian 1: Judul Aplikasi
-st.title("Pengenalan Data Sains")
+st.title("Penerapan Data Sains: Visualisasi dan Statistik")
 
-# Bagian 2: Penjelasan Interaktif tentang Data Sains
+# Bagian 2: Penjelasan Data Sains
 st.header("Apa itu Data Sains?")
 st.write("""
-Data sains adalah bidang studi yang menggunakan metode ilmiah, proses, algoritma, dan sistem untuk mengekstraksi pengetahuan dan wawasan dari data dalam berbagai bentuk, baik terstruktur maupun tidak terstruktur.
-Data sains adalah lanjutan dari beberapa bidang ilmu seperti data mining, machine learning, dan big data.
-
-Berikut adalah beberapa konsep dasar dalam data sains:
-- **Machine Learning**: Teknik yang memungkinkan komputer untuk belajar dari data.
-- **Data Mining**: Proses mencari pola dari sejumlah besar data.
-- **Artificial Intelligence**: Pengembangan sistem yang mampu menjalankan tugas yang biasanya membutuhkan kecerdasan manusia.
-- **Data Visualization**: Penyajian data dalam bentuk visual seperti grafik dan diagram.
-- **Big Data**: Pengelolaan dan analisis data dalam skala besar.
+Data sains adalah bidang multidisiplin yang bertujuan untuk mengekstraksi wawasan dari data. 
+Berikut ini adalah contoh visualisasi dari data terkait topik utama dalam data sains, seperti Machine Learning, 
+Data Mining, dan lainnya. Grafik di bawah ini menggambarkan distribusi artikel ilmiah berdasarkan topik dalam bidang data sains.
 """)
 
-# Menambahkan gambar ilustrasi tentang Data Sains dari URL
-image_url = "https://miro.medium.com/v2/resize:fit:1200/format:webp/1*vJjJ3Mdok6Rvxx85IIRqBQ.png"
-st.image(image_url, caption="Ilustrasi Data Sains", use_column_width=True)
+# Bagian 3: Tabel Dataset dan Statistik
+st.subheader("Tabel Distribusi Artikel Data Sains")
 
-# Bagian 3: Dataset Interaktif
-st.subheader("Tabel Topik Utama dalam Data Sains")
-
-# Contoh dataset interaktif tentang topik data sains
+# Dataset distribusi artikel per topik
 data = {
     'Topik': ['Machine Learning', 'Data Mining', 'Artificial Intelligence', 'Data Visualization', 'Big Data'],
-    'Deskripsi': [
-        'Teknik yang memungkinkan komputer untuk belajar dari data.',
-        'Proses mencari pola dari sejumlah besar data.',
-        'Pengembangan sistem yang mampu menjalankan tugas yang biasanya membutuhkan kecerdasan manusia.',
-        'Penyajian data dalam bentuk visual seperti grafik dan diagram.',
-        'Pengelolaan dan analisis data dalam skala besar.'
-    ],
-    'Tingkat Kesulitan': ['Menengah', 'Sulit', 'Sulit', 'Mudah', 'Menengah']
+    'Jumlah Artikel': [120, 80, 100, 50, 90]
 }
 
 # Membuat DataFrame menggunakan pandas
 df = pd.DataFrame(data)
 
-# Menampilkan tabel interaktif di Streamlit
-st.write("Berikut ini adalah beberapa topik utama dalam data sains:")
-st.dataframe(df)  # Tabel interaktif yang bisa disortir dan discroll
+# Menampilkan tabel distribusi artikel
+st.write("Berikut adalah jumlah artikel ilmiah terkait setiap topik data sains:")
+st.dataframe(df)
 
-# Bagian 4: Menyematkan Video YouTube
+# Bagian 4: Grafik Interaktif dengan Plotly
+st.subheader("Grafik Distribusi Artikel Ilmiah Berdasarkan Topik")
+
+# Membuat grafik bar chart interaktif
+fig = px.bar(df, x='Topik', y='Jumlah Artikel', 
+             title="Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains",
+             labels={'Jumlah Artikel': 'Jumlah Artikel (Unit)', 'Topik': 'Topik Data Sains'})
+
+# Menampilkan grafik interaktif di Streamlit
+st.plotly_chart(fig)
+
+# Bagian 5: Penjelasan Grafik
+st.write("""
+Grafik di atas menunjukkan distribusi artikel ilmiah berdasarkan topik utama dalam data sains. 
+Ini adalah salah satu cara visualisasi yang dapat membantu kita memahami data dengan lebih baik. 
+Contoh visualisasi ini menggunakan **Plotly**, sebuah library populer untuk visualisasi data interaktif.
+""")
+
+# Bagian 6: Menyematkan Video YouTube (Tambahan)
 st.subheader("Video Penjelasan tentang Data Sains")
 
 # Link video YouTube
@@ -55,9 +57,7 @@ st.video(video_url)
 # Penjelasan tentang video
 st.write("Video ini menjelaskan dasar-dasar tentang data sains. Jika kamu ingin mendownload video ini, klik tombol di bawah.")
 
-# Bagian 5: Tombol Download Video
-download_url = "https://www.y2mate.com/youtube/wq-O8byTAF0"
-
 # Tombol untuk download video
+download_url = "https://www.y2mate.com/youtube/wq-O8byTAF0"
 if st.button('Download Video'):
     st.markdown(f"[Klik di sini untuk download video](https://www.y2mate.com/youtube/wq-O8byTAF0)")
