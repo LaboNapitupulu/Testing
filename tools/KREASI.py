@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from PIL import Image
 
 # Bagian 1: Judul Aplikasi
 st.title("Pengenalan Data Sains")
@@ -19,9 +18,9 @@ Berikut adalah beberapa konsep dasar dalam data sains:
 - **Big Data**: Pengelolaan dan analisis data dalam skala besar.
 """)
 
-# Menambahkan gambar ilustrasi tentang Data Sains
-image = Image.open("path_to_your_image/data_science.jpg")  # Ganti path dengan gambar relevan
-st.image(image, caption="Ilustrasi Data Sains", use_column_width=True)
+# Menambahkan gambar ilustrasi tentang Data Sains dari URL
+image_url = "https://miro.medium.com/v2/resize:fit:1200/format:webp/1*vJjJ3Mdok6Rvxx85IIRqBQ.png"
+st.image(image_url, caption="Ilustrasi Data Sains", use_column_width=True)
 
 # Bagian 3: Dataset Interaktif
 st.subheader("Tabel Topik Utama dalam Data Sains")
