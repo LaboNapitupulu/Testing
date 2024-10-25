@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 
 # Bagian 1: Judul Aplikasi
 st.title("Penerapan Data Sains: Visualisasi dan Statistik")
@@ -29,35 +28,8 @@ df = pd.DataFrame(data)
 st.write("Berikut adalah jumlah artikel ilmiah terkait setiap topik data sains:")
 st.dataframe(df)
 
-# Bagian 4: Grafik Interaktif dengan Plotly
+# Bagian 4: Grafik Bar Sederhana dengan Streamlit
 st.subheader("Grafik Distribusi Artikel Ilmiah Berdasarkan Topik")
 
-# Membuat grafik bar chart interaktif
-fig = px.bar(df, x='Topik', y='Jumlah Artikel', 
-             title="Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains",
-             labels={'Jumlah Artikel': 'Jumlah Artikel (Unit)', 'Topik': 'Topik Data Sains'})
-
-# Menampilkan grafik interaktif di Streamlit
-st.plotly_chart(fig)
-
-# Bagian 5: Penjelasan Grafik
-st.write("""
-Grafik di atas menunjukkan distribusi artikel ilmiah berdasarkan topik utama dalam data sains. 
-Ini adalah salah satu cara visualisasi yang dapat membantu kita memahami data dengan lebih baik. 
-Contoh visualisasi ini menggunakan **Plotly**, sebuah library populer untuk visualisasi data interaktif.
-""")
-
-# Bagian 6: Menyematkan Video YouTube (Tambahan)
-st.subheader("Video Penjelasan tentang Data Sains")
-
-# Link video YouTube
-video_url = "https://youtu.be/wq-O8byTAF0"
-st.video(video_url)
-
-# Penjelasan tentang video
-st.write("Video ini menjelaskan dasar-dasar tentang data sains. Jika kamu ingin mendownload video ini, klik tombol di bawah.")
-
-# Tombol untuk download video
-download_url = "https://www.y2mate.com/youtube/wq-O8byTAF0"
-if st.button('Download Video'):
-    st.markdown(f"[Klik di sini untuk download video](https://www.y2mate.com/youtube/wq-O8byTAF0)")
+# Menggunakan bar chart bawaan dari Streamlit
+st.bar_chart(df.set_index('Topik'))
