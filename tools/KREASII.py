@@ -13,22 +13,16 @@ url = 'https://raw.githubusercontent.com/LaboNapitupulu/File/main/HasilWWC.xlsx'
 st.title("Analisis Data Magang CEO HMSD 2024")
 st.write("Mengunduh file data dari GitHub...")
 
-try:
-    # Mengunduh file dari GitHub
-    response = requests.get(url)
-    response.raise_for_status()
-    st.write("File berhasil diunduh!")
-except Exception as e:
-    st.write("Error saat mengunduh file:", e)
+# Mengunduh file dari GitHub
+response = requests.get(url)
+response.raise_for_status()  # Ini akan menghentikan eksekusi jika ada masalah dengan unduhan
+st.write("File berhasil diunduh!")
 
 # Membaca data dari file Excel yang diunduh dan mengonversi kolom NIM menjadi string
-try:
-    data_lembar = pd.read_excel(BytesIO(response.content), sheet_name='Sheeet 1', dtype={'NIM': str})
-    st.write("File berhasil dibaca!")
-    st.write("Data Lengkap:")
-    st.write(data_lembar)  # Menampilkan seluruh data
-except Exception as e:
-    st.write("Error saat membaca file:", e)
+data_lembar = pd.read_excel(BytesIO(response.content), sheet_name='Sheeet 1', dtype={'NIM': str})
+st.write("File berhasil dibaca!")
+st.write("Data Lengkap:")
+st.write(data_lembar)  # Menampilkan seluruh data
 
 # Visualisasi distribusi kategori diterima
 def plot_distribusi_diterima(data):
