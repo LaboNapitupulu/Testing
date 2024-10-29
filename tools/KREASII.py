@@ -25,7 +25,7 @@ except Exception as e:
 try:
     data_lembar = pd.read_excel(BytesIO(response.content), sheet_name='Sheeet 1')
     st.write("File berhasil dibaca!")
-    st.write("Data Preview:", data_lembar.head())  # Menampilkan 5 baris pertama sebagai preview
+    st.write("Data Preview:", data_lembar())  # Menampilkan 5 baris pertama sebagai preview
 except Exception as e:
     st.write("Error saat membaca file:", e)
 
