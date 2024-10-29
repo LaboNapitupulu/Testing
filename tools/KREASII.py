@@ -21,11 +21,12 @@ try:
 except Exception as e:
     st.write("Error saat mengunduh file:", e)
 
-# Membaca data dari file Excel yang diunduh
+# Membaca data dari file Excel yang diunduh dan mengonversi kolom NIM menjadi string
 try:
-    data_lembar = pd.read_excel(BytesIO(response.content), sheet_name='Sheeet 1')
+    data_lembar = pd.read_excel(BytesIO(response.content), sheet_name='Sheeet 1', dtype={'NIM': str})
     st.write("File berhasil dibaca!")
-    st.write("Data Preview:", data_lembar())  # Menampilkan 5 baris pertama sebagai preview
+    st.write("Data Lengkap:")
+    st.write(data_lembar)  # Menampilkan seluruh data
 except Exception as e:
     st.write("Error saat membaca file:", e)
 
