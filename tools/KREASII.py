@@ -1,52 +1,73 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.express as px
-import pandas as pd
-import requests
-from io import BytesIO
 
-# URL mentah file Excel di GitHub
-url = 'https://raw.githubusercontent.com/LaboNapitupulu/File/main/HasilWWC.xlsx'
+# Mengatur tampilan seaborn
+sns.set(style="whitegrid")
 
-# Menampilkan pesan status awal
-st.title("Analisis Data Magang CEO HMSD 2024")
-st.write("Mengunduh file data dari GitHub...")
+# Judul Aplikasi
+st.title("Analisis Jam Kerja Peserta Magang CEO HMSD 2024")
 
-# Mengunduh file dari GitHub
-response = requests.get(url)
-response.raise_for_status()  # Ini akan menghentikan eksekusi jika ada masalah dengan unduhan
-st.write("File berhasil diunduh!")
+# 1. Import Data
+data_url = "https://raw.githubusercontent.com/LaboNapitupulu/File/main/Pendataan_Peserta_Magang_CEO_HMSD_2024.csv"
+df = pd.read_csv(data_url)
 
-# Membaca data dari file Excel yang diunduh dan mengonversi kolom NIM menjadi string
-data_lembar = pd.read_excel(BytesIO(response.content), sheet_name='Sheeet 1', dtype={'NIM': str})
-st.write("File berhasil dibaca!")
-st.write("Data Lengkap:")
-st.write(data_lembar)  # Menampilkan seluruh data
+# Tampilkan Data Mentah
+st.subheader("Data Mentah")
+st.write(df.head())
 
-# Visualisasi distribusi kategori diterima
-def plot_distribusi_diterima(data):
-    st.write("Memulai visualisasi distribusi departemen diterima...")  # Pesan status
+# 2. Data Cleaning
+st.subheader("Data Cleaning")
+df['9. Jam Kerja Magang/Minggu (dalam jam)'] = df['9. Jam Kerja Magang/Minggu (dalam jam)'].replace('Belum ada sejauh ini', '0 jam')
+df['Jam Kerja per Minggu'] = df['9. Jam Kerja Magang/Minggu (dalam jam)'].str.extract(r'(\d+[,\.]?\d*)')[0].str.replace(',', '.').astype(float)
+st.write("Data setelah pembersihan:")
+st.write(df[['Nama Lengkap', 'NIM', '2. Divisi Magang', 'Jam Kerja per Minggu']].head())
 
-    jumlah_diterima = data['DITERIMA'].value_counts()
-    
-    # Plot dengan Matplotlib
-    plt.figure(figsize=(10, 6))
-    sns.countplot(y='DITERIMA', data=data, order=jumlah_diterima.index)
-    plt.title('Distribusi Departemen yang Diterima')
-    plt.xlabel('Jumlah Peserta')
-    plt.ylabel('Departemen')
-    st.pyplot(plt)  # Menampilkan dengan Streamlit
+# 3. Analisis Statistik Deskriptif
+st.subheader("Analisis Statistik Deskriptif")
+st.write(df['Jam Kerja per Minggu'].describe())
 
-    st.write("Visualisasi menggunakan Plotly...")  # Pesan status
+# 4. Visualisasi Data
+st.subheader("Visualisasi Data")
 
-    # Plot interaktif dengan Plotly
-    fig = px.bar(jumlah_diterima, x=jumlah_diterima.values, y=jumlah_diterima.index,
-                 orientation='h', title='Distribusi Departemen yang Diterima')
-    fig.update_layout(xaxis_title='Jumlah Peserta', yaxis_title='Departemen')
-    st.plotly_chart(fig)  # Menampilkan dengan Streamlit
+# Histogram Jam Kerja per Minggu
+st.write("Histogram dari Jam Kerja per Minggu")
+plt.figure(figsize=(10, 6))
+sns.histplot(df['Jam Kerja per Minggu'], bins=10, kde=True, color="#5600f5", edgecolor='black')
+plt.title('Distribusi Jam Kerja per Minggu')
+plt.xlabel('Jam Kerja per Minggu')
+plt.ylabel('Frekuensi')
+st.pyplot(plt)
 
-# Menampilkan konten di Streamlit
-st.write("Menampilkan visualisasi...")
-plot_distribusi_diterima(data_lembar)
-st.write("Visualisasi selesai!")
+# Boxplot Jam Kerja per Minggu
+st.write("Boxplot dari Jam Kerja per Minggu")
+plt.figure(figsize=(8, 5))
+sns.boxplot(y=df['Jam Kerja per Minggu'], color="#5600f5")
+plt.title('Boxplot Jam Kerja per Minggu')
+plt.ylabel('Jam Kerja per Minggu')
+st.pyplot(plt)
+
+# Standarisasi nama divisi untuk menghindari duplikasi
+df['Divisi Magang Standard'] = df['2. Divisi Magang'].str.lower().str.strip()
+
+# Bar Plot rata-rata jam kerja per minggu berdasarkan divisi
+st.write("Rata-rata Jam Kerja per Minggu Berdasarkan Divisi Magang")
+avg_hours_per_division = df.groupby('Divisi Magang Standard')['Jam Kerja per Minggu'].mean().reset_index()
+plt.figure(figsize=(10, 12))
+sns.barplot(data=avg_hours_per_division, x='Jam Kerja per Minggu', y='Divisi Magang Standard', palette="viridis")
+plt.title('Rata-rata Jam Kerja per Minggu Berdasarkan Divisi Magang (Unik dan Distandarisasi)')
+plt.xlabel('Rata-rata Jam Kerja per Minggu')
+plt.ylabel('Divisi Magang')
+st.pyplot(plt)
+
+# Density Plot Jam Kerja per Minggu
+st.write("Density Plot dari Jam Kerja per Minggu")
+valid_data = df['Jam Kerja per Minggu'].dropna()
+plt.figure(figsize=(10, 6))
+sns.kdeplot(valid_data, shade=True, color="blue")
+plt.title('Density Plot of Jam Kerja per Minggu')
+plt.xlabel('Jam Kerja per Minggu')
+plt.ylabel('Density')
+st.pyplot(plt)
