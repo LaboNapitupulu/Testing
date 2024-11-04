@@ -42,6 +42,9 @@ if 'df' in locals():
     df['Jam Kerja per Minggu'] = df['9. Jam Kerja Magang/Minggu (dalam jam)'].str.extract(r'(\d+[,\.]?\d*)')[0].str.replace(',', '.').astype(float)
     st.write(df[['Nama Lengkap', 'NIM', '2. Divisi Magang', 'Jam Kerja per Minggu']].head())
 
+    # Standarisasi nama divisi untuk menghindari duplikasi
+    df['Divisi Magang Standard'] = df['2. Divisi Magang'].str.lower().str.strip()
+
     # 3. Analisis Statistik Deskriptif
     st.subheader("3. Analisis Statistik Deskriptif")
     st.write("""
@@ -49,12 +52,12 @@ if 'df' in locals():
     nilai minimum dan maksimum, serta kuartil. Ini membantu kita memahami rentang jam kerja serta variasi antar peserta.
     """)
 
-    # Filter untuk memilih divisi
-    divisi_unik = df['2. Divisi Magang'].unique()
+    # Mendapatkan daftar divisi unik
+    divisi_unik = df['Divisi Magang Standard'].unique()
     divisi_pilihan = st.selectbox("Pilih Divisi Magang:", divisi_unik)
 
     # Menghitung dan menampilkan statistik deskriptif untuk divisi yang dipilih
-    df_pilihan = df[df['2. Divisi Magang'] == divisi_pilihan]
+    df_pilihan = df[df['Divisi Magang Standard'] == divisi_pilihan]
     if not df_pilihan.empty:
         if st.button("Tampilkan Statistik Deskriptif"):
             st.write(df_pilihan['Jam Kerja per Minggu'].describe())
@@ -86,9 +89,6 @@ if 'df' in locals():
     plt.title('Boxplot Jam Kerja per Minggu')
     plt.ylabel('Jam Kerja per Minggu')
     st.pyplot(plt)
-
-    # Standarisasi nama divisi untuk menghindari duplikasi
-    df['Divisi Magang Standard'] = df['2. Divisi Magang'].str.lower().str.strip()
 
     # Bar Plot rata-rata jam kerja per minggu berdasarkan divisi
     st.write("""
