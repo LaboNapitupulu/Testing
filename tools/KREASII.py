@@ -24,7 +24,12 @@ st.write("""
 Pada kolom "Jam Kerja Magang/Minggu (dalam jam)", beberapa entri memiliki teks "Belum ada sejauh ini".
 Langkah ini mengganti teks tersebut dengan "0 jam" agar dapat diproses.
 Kami kemudian mengekstrak angka dari kolom tersebut dan mengonversinya menjadi format numerik untuk keperluan analisis lebih lanjut.
+Selain itu, kolom NIM dikonversi menjadi string untuk menghindari tampilan dengan koma.
 """)
+# Konversi NIM menjadi string untuk menghindari tampilan dengan koma
+df['NIM'] = df['NIM'].astype(str)
+
+# Pembersihan data jam kerja
 df['9. Jam Kerja Magang/Minggu (dalam jam)'] = df['9. Jam Kerja Magang/Minggu (dalam jam)'].replace('Belum ada sejauh ini', '0 jam')
 df['Jam Kerja per Minggu'] = df['9. Jam Kerja Magang/Minggu (dalam jam)'].str.extract(r'(\d+[,\.]?\d*)')[0].str.replace(',', '.').astype(float)
 st.write(df[['Nama Lengkap', 'NIM', '2. Divisi Magang', 'Jam Kerja per Minggu']].head())
