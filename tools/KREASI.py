@@ -1,138 +1,117 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Bagian 1: Judul Aplikasi
-st.title("Penerapan Data Sains: Visualisasi dan Statistik")
+# Mengatur tampilan grafik dengan tema 'whitegrid' dari seaborn
+sns.set(style="whitegrid")
 
-# Bagian 2: Penjelasan Data Sains
-st.header("Apa itu Data Sains?")
-st.write("""
-Data sains adalah bidang multidisiplin yang bertujuan untuk mengekstraksi wawasan dari data. 
-Beberapa topik penting dalam data sains meliputi Machine Learning, Data Mining, Artificial Intelligence, 
-Data Visualization, dan Big Data. Berikut ini adalah contoh visualisasi dari data terkait pengguna internet di berbagai negara.
-""")
+# Judul Aplikasi
+st.title("Analisis Jam Kerja Peserta Magang CEO HMSD 2024")
+st.write("Aplikasi ini menganalisis data jam kerja peserta magang untuk memberikan wawasan mengenai pola kerja mereka di berbagai divisi.")
 
-# Bagian 3: Tabel dan Grafik Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains
-st.subheader("Tabel dan Grafik Distribusi Artikel Ilmiah Berdasarkan Topik Data Sains")
+# 1. Import Data
+st.subheader("1. Import Data")
+data_url = "https://raw.githubusercontent.com/LaboNapitupulu/File/main/Pendataan_Peserta_Magang_CEO_HMSD_2024.csv"
 
-# Dataset distribusi artikel per topik
-data_artikel = {
-    'Topik': ['Machine Learning', 'Data Mining', 'Artificial Intelligence', 'Data Visualization', 'Big Data'],
-    'Jumlah Artikel': [120, 80, 100, 50, 90]
-}
+# Penanganan kesalahan saat mengimpor data
+try:
+    df = pd.read_csv(data_url)
+    st.success("Data berhasil diimpor!")
+except Exception as e:
+    st.error(f"Terjadi kesalahan saat mengimpor data: {e}")
 
-# Membuat DataFrame untuk artikel ilmiah
-df_artikel = pd.DataFrame(data_artikel)
+if 'df' in locals():
+    st.write(df.head())  # Menampilkan beberapa baris pertama data untuk memberikan gambaran tentang isinya
 
-# Menampilkan tabel distribusi artikel
-st.write("Berikut adalah jumlah artikel ilmiah terkait setiap topik data sains:")
-st.dataframe(df_artikel)
+    # 2. Data Cleaning (Pembersihan Data)
+    st.subheader("2. Pembersihan Data")
+    st.write("""
+    Pada kolom "Jam Kerja Magang/Minggu (dalam jam)", beberapa entri memiliki teks "Belum ada sejauh ini".
+    Langkah ini mengganti teks tersebut dengan "0 jam" agar dapat diproses.
+    Kami kemudian mengekstrak angka dari kolom tersebut dan mengonversinya menjadi format numerik untuk keperluan analisis lebih lanjut.
+    Selain itu, kolom NIM dikonversi menjadi string untuk menghindari tampilan dengan koma.
+    """)
 
-# Menggunakan Streamlit's built-in bar chart untuk distribusi artikel
-st.bar_chart(df_artikel.set_index('Topik'))
+    # Konversi NIM menjadi string untuk menghindari tampilan dengan koma
+    df['NIM'] = df['NIM'].astype(str)
 
-# Penjelasan grafik
-st.write("""
-Grafik di atas menunjukkan distribusi artikel ilmiah berdasarkan topik utama dalam data sains.
-Machine Learning dan Artificial Intelligence merupakan topik yang paling banyak diteliti dalam beberapa tahun terakhir.
-""")
+    # Pembersihan data jam kerja
+    df['9. Jam Kerja Magang/Minggu (dalam jam)'] = df['9. Jam Kerja Magang/Minggu (dalam jam)'].replace('Belum ada sejauh ini', '0 jam')
+    df['Jam Kerja per Minggu'] = df['9. Jam Kerja Magang/Minggu (dalam jam)'].str.extract(r'(\d+[,\.]?\d*)')[0].str.replace(',', '.').astype(float)
+    st.write(df[['Nama Lengkap', 'NIM', '2. Divisi Magang', 'Jam Kerja per Minggu']].head())
 
-# Bagian 4: Menyematkan Video YouTube
-st.subheader("Video Penjelasan tentang Data Sains")
-video_url = "https://youtu.be/wq-O8byTAF0"
-st.video(video_url)
+    # 3. Analisis Statistik Deskriptif
+    st.subheader("3. Analisis Statistik Deskriptif")
+    st.write("""
+    Analisis statistik deskriptif memberikan gambaran mengenai distribusi jam kerja, termasuk rata-rata, standar deviasi, 
+    nilai minimum dan maksimum, serta kuartil. Ini membantu kita memahami rentang jam kerja serta variasi antar peserta.
+    """)
 
-# Penjelasan tentang video
-st.write("Video ini menjelaskan dasar-dasar tentang data sains. Jika kamu ingin mendownload video ini, klik tombol di bawah.")
+    # Filter untuk memilih divisi
+    divisi_unik = df['2. Divisi Magang'].unique()
+    divisi_pilihan = st.selectbox("Pilih Divisi Magang:", divisi_unik)
 
-# Tombol untuk download video
-download_url = "https://drive.google.com/file/d/12JhS_ct2DTdhYZ3ENl-3JYdbfNpn1dlD/view?usp=sharing"
-if st.button('Download Video'):
-    st.markdown(f"[Klik di sini untuk download video](https://drive.google.com/file/d/12JhS_ct2DTdhYZ3ENl-3JYdbfNpn1dlD/view?usp=sharing)")
+    # Menghitung dan menampilkan statistik deskriptif untuk divisi yang dipilih
+    df_pilihan = df[df['2. Divisi Magang'] == divisi_pilihan]
+    if not df_pilihan.empty:
+        if st.button("Tampilkan Statistik Deskriptif"):
+            st.write(df_pilihan['Jam Kerja per Minggu'].describe())
+    else:
+        st.write("Tidak ada data untuk divisi yang dipilih.")
 
-# Bagian 5: Contoh Visualisasi Data
-st.header("Contoh Visualisasi Data")
+    # 4. Visualisasi Data
+    st.subheader("4. Visualisasi Data")
 
-# Bagian 6: Visualisasi Data Pengguna Internet di Dunia
-st.subheader("Pengguna Internet di Dunia")
+    # Histogram untuk kolom "Jam Kerja per Minggu"
+    st.write("""
+    **Histogram Jam Kerja per Minggu**: Histogram ini menunjukkan distribusi frekuensi dari jam kerja peserta magang. 
+    Garis distribusi kepadatan membantu memperjelas pola distribusi secara umum.
+    """)
+    plt.figure(figsize=(10, 6))
+    sns.histplot(df['Jam Kerja per Minggu'], bins=10, kde=True, color="#5600f5", edgecolor='black')
+    plt.title('Distribusi Jam Kerja per Minggu')
+    plt.xlabel('Jam Kerja per Minggu')
+    plt.ylabel('Frekuensi')
+    st.pyplot(plt)
 
-# Dataset Pengguna Internet di 25 negara
-data_internet = {
-    'Negara': [
-        'United States', 'Indonesia', 'India', 'Brazil', 'China', 
-        'Germany', 'United Kingdom', 'France', 'Japan', 'Russia',
-        'South Africa', 'Australia', 'Canada', 'Mexico', 'Italy', 
-        'South Korea', 'Spain', 'Turkey', 'Argentina', 'Nigeria', 
-        'Netherlands', 'Saudi Arabia', 'Taiwan', 'Sweden', 'Norway'
-    ],
-    'Pengguna Internet (%)': [
-        89, 64, 50, 75, 60, 
-        91, 94, 93, 92, 78, 
-        62, 89, 88, 70, 82, 
-        85, 83, 79, 76, 71, 
-        67, 64, 66, 90, 88
-    ]
-}
+    # Boxplot untuk kolom "Jam Kerja per Minggu"
+    st.write("""
+    **Boxplot Jam Kerja per Minggu**: Boxplot ini menunjukkan distribusi rentang jam kerja, termasuk nilai ekstrem (outlier).
+    Kita dapat melihat rentang mayoritas jam kerja mingguan serta outlier yang mungkin ada di antara peserta.
+    """)
+    plt.figure(figsize=(8, 5))
+    sns.boxplot(y=df['Jam Kerja per Minggu'], color="#5600f5")
+    plt.title('Boxplot Jam Kerja per Minggu')
+    plt.ylabel('Jam Kerja per Minggu')
+    st.pyplot(plt)
 
-# Membuat DataFrame
-df_internet = pd.DataFrame(data_internet)
+    # Standarisasi nama divisi untuk menghindari duplikasi
+    df['Divisi Magang Standard'] = df['2. Divisi Magang'].str.lower().str.strip()
 
-# Menampilkan tabel data pengguna internet
-st.write("Berikut adalah persentase pengguna internet di berbagai negara:")
-st.dataframe(df_internet)
+    # Bar Plot rata-rata jam kerja per minggu berdasarkan divisi
+    st.write("""
+    **Rata-rata Jam Kerja per Minggu Berdasarkan Divisi**: Setelah standarisasi nama divisi, 
+    rata-rata jam kerja dihitung untuk setiap divisi. Grafik ini memudahkan kita membandingkan beban kerja antara divisi-divisi yang berbeda.
+    """)
+    avg_hours_per_division = df.groupby('Divisi Magang Standard')['Jam Kerja per Minggu'].mean().reset_index()
+    plt.figure(figsize=(10, 12))
+    sns.barplot(data=avg_hours_per_division, x='Jam Kerja per Minggu', y='Divisi Magang Standard', palette="viridis")
+    plt.title('Rata-rata Jam Kerja per Minggu Berdasarkan Divisi Magang (Unik dan Distandarisasi)')
+    plt.xlabel('Rata-rata Jam Kerja per Minggu')
+    plt.ylabel('Divisi Magang')
+    st.pyplot(plt)
 
-# Membuat peta interaktif dengan Plotly
-fig = px.choropleth(
-    df_internet, 
-    locations='Negara', 
-    locationmode='country names',
-    color='Pengguna Internet (%)', 
-    hover_name='Negara',
-    title="Pengguna Internet di Dunia Berdasarkan Negara",
-    color_continuous_scale="Blues"
-)
-
-# Menampilkan peta di Streamlit
-st.plotly_chart(fig)
-
-# Penjelasan tambahan
-st.write("""
-Peta di atas menunjukkan persentase pengguna internet di berbagai negara. 
-Negara dengan pengguna internet terbanyak adalah Amerika Serikat, diikuti oleh Indonesia dan India.
-""")
-
-# Bagian 7: Analisis Data COVID-19
-st.subheader("Analisis Kasus COVID-19")
-
-# Dataset kasus COVID-19 (contoh)
-data_covid = {
-    'Tanggal': pd.date_range(start='2020-01-01', periods=10, freq='M'),
-    'Kasus Harian': [100, 150, 200, 180, 160, 120, 130, 140, 170, 190]
-}
-
-# Membuat DataFrame untuk kasus COVID-19
-df_covid = pd.DataFrame(data_covid)
-
-# Menampilkan tabel kasus harian
-st.write("Berikut adalah data kasus harian COVID-19:")
-st.dataframe(df_covid)
-
-# Membuat grafik garis untuk kasus COVID-19
-fig_covid = px.line(df_covid, x='Tanggal', y='Kasus Harian', title='Tren Kasus COVID-19 Harian')
-
-# Menampilkan grafik di Streamlit
-st.plotly_chart(fig_covid)
-
-# Penjelasan tambahan
-st.write("""
-Grafik di atas menunjukkan tren kenaikan dan penurunan kasus COVID-19 selama periode waktu tertentu.
-""")
-
-# Sumber Data
-st.write("""
-Sumber Data:
-1. **Topik Data Sains (Jumlah Artikel)**: Data diambil dari [Google Scholar](https://scholar.google.com/) atau [arXiv](https://arxiv.org/).
-2. **Pengguna Internet di Dunia**: Data diambil dari [Internet World Stats](https://www.internetworldstats.com/) atau [Statista](https://www.statista.com/).
-3. **Analisis Kasus COVID-19**: Data diambil dari [World Health Organization (WHO)](https://www.who.int/) atau [Our World in Data](https://ourworldindata.org/coronavirus).
-""")
+    # Density Plot untuk kolom "Jam Kerja per Minggu"
+    st.write("""
+    **Density Plot Jam Kerja per Minggu**: Density plot ini menunjukkan kepadatan data pada berbagai rentang nilai jam kerja.
+    Plot ini memberikan gambaran umum distribusi data, termasuk area dengan kepadatan data tinggi dan rendah.
+    """)
+    valid_data = df['Jam Kerja per Minggu'].dropna()
+    plt.figure(figsize=(10, 6))
+    sns.kdeplot(valid_data, shade=True, color="blue")
+    plt.title('Density Plot of Jam Kerja per Minggu')
+    plt.xlabel('Jam Kerja per Minggu')
+    plt.ylabel('Density')
+    st.pyplot(plt)
